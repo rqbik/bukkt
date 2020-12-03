@@ -1,5 +1,17 @@
 # Buk.kt
 
+Dependency
+
+```kotlin
+repositories {
+    maven { setUrl("https://jitpack.io/") }
+}
+
+dependencies {
+    implementation("com.github.rqbik", "bukkt", "1.0.0")
+}
+```
+
 Example
 
 ```kotlin
