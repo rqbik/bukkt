@@ -3,7 +3,7 @@ on:
     tags:
       - "*"
 
-name: Release QologramAPI to JitPack
+name: Release Bukkt to JitPack
 
 jobs:
   build:
