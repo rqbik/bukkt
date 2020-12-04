@@ -13,6 +13,10 @@ jobs:
       - name: Begin CI...
         uses: actions/checkout@v2
 
+      - name: Get tag
+        id: get_tag
+        uses: dawidd6/action-get-tag@v1
+
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
@@ -22,7 +26,7 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: |
-            #### Release ${{ github.ref }}
+            #### Release ${{ steps.get_tag.outputs.tag }}
 
             Dependency:
 
@@ -32,7 +36,7 @@ jobs:
             }
 
             dependencies {
-                implementation("com.github.rqbik", "bukkt", "${{ github.event.release.tag_name }}")
+                implementation("com.github.rqbik", "bukkt", "${{ steps.get_tag.outputs.tag }}")
             }
             ```
           draft: false
