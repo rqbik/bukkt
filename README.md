@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.rqbik", "bukkt", "1.0.0")
+    implementation("com.github.rqbik", "bukkt", "1.0.2")
 }
 ```
 
