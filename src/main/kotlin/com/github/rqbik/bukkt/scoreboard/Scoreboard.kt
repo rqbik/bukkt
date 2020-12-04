@@ -85,15 +85,21 @@ class ScoreboardDSLBuilder(private val plugin: Plugin, var title: String) : Scor
     /**
      * Creates a new line at the end of the scoreboard.
      * If lines are already at maximum capacity, new line won't be created.
+     *
+     * Be aware that your text can't exceed 32 characters, and will be split at 16 characters.
+     * If your color codes mess up, try to insert trailing spaces before them.
      */
     fun line(scoreboardLine: ScoreboardLine) {
         val idx = lines.size + 1
-        if (idx in linesBounds) return
-        line(lines.size, scoreboardLine)
+        if (idx !in linesBounds) return
+        line(idx, scoreboardLine)
     }
 
     /**
      * Set a [text] to specified [line] of the scoreboard.
+     *
+     * Be aware that your text can't exceed 32 characters, and will be split at 16 characters.
+     * If your color codes mess up, try to insert trailing spaces before them.
      */
     fun line(line: Int, text: String) = line(line, text, block = {})
 
@@ -109,6 +115,9 @@ class ScoreboardDSLBuilder(private val plugin: Plugin, var title: String) : Scor
      * when the line renders to the player, or [ScoreboardLine.onUpdate] when you call [updateLine].
      *
      * If lines are already at maximum capacity, new line won't be created.
+     *
+     * Be aware that your text can't exceed 32 characters, and will be split at 16 characters.
+     * If your color codes mess up, try to insert trailing spaces before them.
      */
     @ScoreboardDSLMarker
     inline fun line(
@@ -122,7 +131,10 @@ class ScoreboardDSLBuilder(private val plugin: Plugin, var title: String) : Scor
      * In the builder you can use [ScoreboardLine.onRender] to change the value
      * when the line renders to the player, or [ScoreboardLine.onUpdate] when you call [updateLine].
      *
-     * If [line] be greater then 16 or less then 1 the line will be ignored.
+     * If [line] be greater then 16 or less than 1 the line will be ignored.
+     *
+     * Be aware that your text can't exceed 32 characters, and will be split at 16 characters.
+     * If your color codes mess up, try to insert trailing spaces before them.
      */
     @ScoreboardDSLMarker
     inline fun line(
@@ -133,6 +145,9 @@ class ScoreboardDSLBuilder(private val plugin: Plugin, var title: String) : Scor
 
     /**
      * Add an array of lines to the scoreboard starting at the [startInLine] value.
+     *
+     * Be aware that your text can't exceed 32 characters, and will be split at 16 characters.
+     * If your color codes mess up, try to insert trailing spaces before them.
      */
     fun lines(vararg lines: String, startInLine: Int = 1) {
         lines(*lines, startInLine = startInLine, block = {})
@@ -143,6 +158,9 @@ class ScoreboardDSLBuilder(private val plugin: Plugin, var title: String) : Scor
      *
      * In the builder you can use [ScoreboardLine.onRender] to change the value
      * when the line renders to the player, or [ScoreboardLine.onUpdate] when you call [updateLine].
+     *
+     * Be aware that your text can't exceed 32 characters, and will be split at 16 characters.
+     * If your color codes mess up, try to insert trailing spaces before them.
      */
     @ScoreboardDSLMarker
     inline fun lines(vararg lines: String, startInLine: Int = 1, block: ScoreboardLine.() -> Unit) {
