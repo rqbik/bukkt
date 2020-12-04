@@ -1,6 +1,6 @@
 # Buk.kt
 
-Dependency
+Dependency:
 
 ```kotlin
 repositories {
@@ -12,7 +12,7 @@ dependencies {
 }
 ```
 
-Example
+Example:
 
 ```kotlin
 class Plugin : JavaPlugin() {

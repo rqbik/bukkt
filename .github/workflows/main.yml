@@ -22,6 +22,18 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: |
-            Release ${{ github.ref }}
+            #### Release ${{ github.ref }}
+
+            Dependency:
+
+            ```kotlin
+            repositories {
+                maven { setUrl("https://jitpack.io/") }
+            }
+
+            dependencies {
+                implementation("com.github.rqbik", "bukkt", "${{ github.event.release.tag_name }}")
+            }
+            ```
           draft: false
           prerelease: false
