@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.rqbik", "bukkt", "1.0.2")
+    implementation("com.github.rqbik", "bukkt", "1.0.7")
 }
 ```
 
@@ -34,6 +34,8 @@ class Plugin : JavaPlugin() {
 
                 if (block.type in Tag.WOOL) player.fly = true
 
+                // Sometimes IDEA bugs out and can't import operator extensions.
+                // To fix this, place this import: `import com.github.rqbik.bukkt.extensions.vecloc.contains`
                 if (block.location in BoundingBox(-100.0..100.0, 0.0..255.0, -100.0..100.0)) {
                     isCancelled = true
                     player.sendMessage("You can't break blocks at spawn!")

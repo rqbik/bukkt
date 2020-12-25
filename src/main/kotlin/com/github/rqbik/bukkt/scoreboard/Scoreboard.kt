@@ -109,6 +109,18 @@ class ScoreboardDSLBuilder(private val plugin: Plugin, var title: String) : Scor
     fun line(text: String) = line(text, block = {})
 
     /**
+     * Creates a new line with a static base
+     */
+    fun staticLine(base: String, suffix: String = "", prefix: String = "") =
+        line(ScoreboardLine(this, base, "${if (suffix.isEmpty()) " ".repeat(16) else suffix}${prefix}"))
+
+    /**
+     * Creates a new line with a static base
+     */
+    fun staticLine(base: String, block: ScoreboardLine.() -> Unit, suffix: String = "", prefix: String = "") =
+        line(ScoreboardLine(this, base, "${suffix}${prefix}").apply(block))
+
+    /**
      * Set a [text] to the end of the scoreboard with a builder.
      *
      * In the builder you can use [ScoreboardLine.onRender] to change the value
@@ -123,7 +135,7 @@ class ScoreboardDSLBuilder(private val plugin: Plugin, var title: String) : Scor
     inline fun line(
             text: String,
             block: ScoreboardLine.() -> Unit
-    ) = line(ScoreboardLine(this, text).apply(block))
+    ) = line(ScoreboardLine(this, text = text).apply(block))
 
     /**
      * Set a [text] to specified [line] (1 to 16) of the scoreboard with a builder.
@@ -141,7 +153,7 @@ class ScoreboardDSLBuilder(private val plugin: Plugin, var title: String) : Scor
             line: Int,
             text: String,
             block: ScoreboardLine.() -> Unit
-    ) = line(line, ScoreboardLine(this, text).apply(block))
+    ) = line(line, ScoreboardLine(this, text = text).apply(block))
 
     /**
      * Add an array of lines to the scoreboard starting at the [startInLine] value.
@@ -221,9 +233,11 @@ class ScoreboardDSLBuilder(private val plugin: Plugin, var title: String) : Scor
 
     private inline fun lineBuild(objective: Objective, line: Int, lineTextTransformer: (ScoreboardLine) -> String) {
         val sb = objective.scoreboard
-        val sbLine = lines[line] ?: ScoreboardLine(this, "")
+        val sbLine = lines[line] ?: ScoreboardLine(this, "", "")
 
-        val lineEntry = entryByLine(line)
+        val base = lines[line]?.base
+
+        val lineEntry = if (base != null && base.isNotEmpty()) base else entryByLine(line)
         val realScoreLine = 17 - line
 
         val text = lineTextTransformer(sbLine)
@@ -239,7 +253,7 @@ class ScoreboardDSLBuilder(private val plugin: Plugin, var title: String) : Scor
         if (text.length > 16) {
             val fixedText = if (text.length > 32) text.take(32) else text
             val prefix = fixedText.substring(0, 16)
-            val suffix = fixedText.substring(16, fixedText.length - 1)
+            val suffix = fixedText.substring(16, fixedText.length)
 
             if (team.prefix != prefix || team.suffix != suffix) {
                 team.prefix = prefix
@@ -320,7 +334,7 @@ class LineUpdate(override val player: Player, override var newText: String) : Pl
 typealias LineRenderListener = LineRender.() -> Unit
 typealias LineUpdateListener = LineUpdate.() -> Unit
 
-class ScoreboardLine(private val scoreboard: ScoreboardDSLBuilder, text: String) {
+class ScoreboardLine(private val scoreboard: ScoreboardDSLBuilder, val base: String = "", text: String) {
     var text: String = text
         internal set
 
